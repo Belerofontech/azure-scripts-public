@@ -1,6 +1,5 @@
 #!/bin/bash
-# Script to install PostgreSQL 12 (from the official apt repository) on a Ubuntu system
-# NOTE: works on Ubuntu in WSL too
+# Script to install PostgreSQL 12 (from the official apt repository) on a Ubuntu (18.04) system
 
 # Optional: more debug info (show executed commands)
 # set -x
@@ -23,15 +22,18 @@ function OptionalAptGetUpdate()
     # Run only if "update-success-stamp" file is present and older than 1 hour (means apt-get update has been run recently, and no apt-get clean afterwards)
     LAST_UPDATED=$( stat --format="%X" /var/lib/apt/periodic/update-success-stamp 2>/dev/null || echo 0 )
     TIME_DIFF=$(( $( date +%s ) - LAST_UPDATED ))
-    [[ $TIME_DIFF -gt 3600 ]] && DEBIAN_FRONTEND=noninteractive apt-get -y update
+    [[ $TIME_DIFF -gt 3600 ]] && apt-get -y update
 }
 
 # Check for root permissions (user id = 0) and invocation from sudo
-if [[ $( id -u ) != 0 ]] || [[ -z "$SUDO_USER" ]]
+if [[ $( id -u ) != 0 ]] || [[ -z "$SUDO_USER" ]] || [[ "root" = "$SUDO_USER" ]]
 then
-    echo "This script must be run with root privileges, with sudo"
+    echo "This script must be run with root privileges, with sudo (by a non-root user)"
     exit 1
 fi
+
+# Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
+export DEBIAN_FRONTEND=noninteractive
 
 # The first time, generate a random pass and store it in ~/.postgresqlpass
 if [[ -z "$DBPASS" ]]
@@ -49,24 +51,24 @@ fi
 # Install pre-requisite packages and get the updated repository information
 PREREQ="apt-transport-https lm-sensors"
 echo
-echo "Installing pre-requisite packages: $PREREQ"
+echo "Installing pre-requisite package(s): $PREREQ"
 # Run apt-get update only if it hasn't run recently, to save some time
 OptionalAptGetUpdate
-DEBIAN_FRONTEND=noninteractive apt-get -y install $PREREQ
-[[ $? -ne 0 ]] && echo "Error, pre-requisite packages cannot be installed" && exit 1
+apt-get -y install $PREREQ
+[[ $? -ne 0 ]] && echo "Error, pre-requisite package(s) cannot be installed" && exit 1
 
-# PostgreSQL 12 official apt repository. See:
+# PostgreSQL 12 official apt repository. For more info see:
 # https://www.postgresql.org/download/linux/ubuntu/
 echo
 echo "Setting up PostgreSQL repository"
 echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 wget --quiet -O - 'https://www.postgresql.org/media/keys/ACCC4CF8.asc' | apt-key add -
-DEBIAN_FRONTEND=noninteractive apt-get -y update
+apt-get -y update
 [[ $? -ne 0 ]] && echo "Error, new repository could not be added (or some other issue happened)" && exit 1
 
 echo
-echo "Installing PostgreSQL 12"
-DEBIAN_FRONTEND=noninteractive apt-get -y install postgresql-12 postgresql-client-12 postgresql-doc-12 pgtop
+echo "Installing packages from PostgreSQL repository"
+apt-get -y install postgresql-12 postgresql-client-12 postgresql-doc-12 pgtop python3-psycopg2
 
 # Start the service (in case it has not already been done)
 # NOTE: we use service because it works on WSL too (and calls systemctl instead when it has to)

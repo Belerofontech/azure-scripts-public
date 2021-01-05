@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script to install Microsoft SQL Server 2019 (Express) on a Ubuntu system
+# Script to install Microsoft SQL Server 2019 (Express) on a Ubuntu (18.04) system
 # Derived from instructions at https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-linux-ver15
 # and https://docs.microsoft.com/en-us/sql/linux/sample-unattended-install-ubuntu?view=sql-server-linux-ver15
 #
@@ -21,16 +21,16 @@ then
 fi
 echo "Value for DBPASS variable: $DBPASS"
 
-# Install pre-requisite packages and get the updated repository information
+# Get the updated repository information
 function OptionalAptGetUpdate()
 {
     # Run only if "update-success-stamp" file is present and older than 1 hour (means apt-get update has been run recently, and no apt-get clean afterwards)
     LAST_UPDATED=$( stat --format="%X" /var/lib/apt/periodic/update-success-stamp 2>/dev/null || echo 0 )
     TIME_DIFF=$(( $( date +%s ) - LAST_UPDATED ))
-    [[ $TIME_DIFF -gt 3600 ]] && DEBIAN_FRONTEND=noninteractive apt-get -y update
+    [[ $TIME_DIFF -gt 3600 ]] && apt-get -y update
 }
 
-function is_wsl()
+function insideWSL()
 {
     case "$(uname -r)" in
     *microsoft* ) true ;; # WSL 2
@@ -39,20 +39,22 @@ function is_wsl()
     esac
 }
 
-# Check for root permissions (user id = 0)
-if [[ $( id -u ) != 0 ]] || [[ -z "$SUDO_USER" ]]
+# Check for root permissions (user id = 0) and invocation from sudo
+if [[ $( id -u ) != 0 ]] || [[ -z "$SUDO_USER" ]] || [[ "root" = "$SUDO_USER" ]]
 then
-    echo "This script must be run with root privileges, with sudo"
+    echo "This script must be run with root privileges, with sudo (by a non-root user)"
     exit 1
 fi
 
 # Check for WSL
-is_wsl
-if [[ $? -eq 0 ]]
+if insideWSL
 then
     echo "Microsoft SQL Server 2019 is not supported on WSL"
     exit 1
 fi
+
+# Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
+export DEBIAN_FRONTEND=noninteractive
 
 # The first time, generate a random pass and store it in ~/.sqlserverpass
 if [[ -z "$DBPASS" ]]
@@ -69,11 +71,14 @@ then
     chmod 640 ~/.sqlserverpass
 fi
 
+# Install pre-requisite packages and get the updated repository information
+# TO-DO: check; unixodbc-dev is really needed?
+PREREQ="apt-transport-https unixodbc-dev"
 echo
-echo "Installing pre-requisite packages apt-transport-https and unixodbc-dev"
+echo "Installing pre-requisite packages: $PREREQ"
 # Run apt-get update only if it hasn't run recently, to save some time
 OptionalAptGetUpdate
-DEBIAN_FRONTEND=noninteractive apt-get -y install apt-transport-https unixodbc-dev
+apt-get -y install $PREREQ
 [[ $? -ne 0 ]] && echo "Error, pre-requisite package(s) cannot be installed" && exit 1
 
 AZ_REPO=$(lsb_release -rs)
@@ -91,11 +96,11 @@ echo
 curl -sf https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 
 # Get the updated repository information (in this case it must be done always, since we have added a new repository)
-DEBIAN_FRONTEND=noninteractive apt-get -y update
+apt-get -y update
 
 echo
 echo "Installing packages from Microsoft repository"
-ACCEPT_EULA=Y DEBIAN_FRONTEND=noninteractive apt-get -y install mssql-server
+ACCEPT_EULA=Y apt-get -y install mssql-server
 [[ $? -ne 0 ]] && echo "Error, package mssql-server cannot be installed" && exit 1
 
 echo
@@ -127,7 +132,7 @@ echo "Also, remember to configure firewall(s) to allow traffic to TCP port 1433.
 # # TO-DO: fix, the package is no longer available?
 # echo
 # echo "Installing SQL Server Agent from Microsoft repository"
-# DEBIAN_FRONTEND=noninteractive apt-get -y install mssql-server-agent
+# apt-get -y install mssql-server-agent
 
 echo
 echo "Restarting SQL Server..."
