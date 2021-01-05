@@ -1,13 +1,16 @@
 #!/bin/bash
-# Script to install the Azure CLI 2.0 on a Ubuntu system
+# Script to install the Azure CLI 2.0 on a Ubuntu (18.04) system
 
-# Install pre-requisite packages and get the updated repository information
+# Optional: more debug info (show executed commands)
+# set -x
+
+# Get the updated repository information
 function OptionalAptGetUpdate()
 {
     # Run only if "update-success-stamp" file is present and older than 1 hour (means apt-get update has been run recently, and no apt-get clean afterwards)
     LAST_UPDATED=$( stat --format="%X" /var/lib/apt/periodic/update-success-stamp 2>/dev/null || echo 0 )
     TIME_DIFF=$(( $( date +%s ) - LAST_UPDATED ))
-    [[ $TIME_DIFF -gt 3600 ]] && DEBIAN_FRONTEND=noninteractive apt-get -y update
+    [[ $TIME_DIFF -gt 3600 ]] && apt-get -y update
 }
 
 # Check for root permissions (user id = 0)
@@ -17,11 +20,16 @@ then
     exit 1
 fi
 
-echo "Installing pre-requisite package apt-transport-https"
+# Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
+export DEBIAN_FRONTEND=noninteractive
+
+# Install pre-requisite packages and get the updated repository information
+PREREQ="apt-transport-https"
+echo "Installing pre-requisite package(s): $PREREQ"
 # Run apt-get update only if it hasn't run recently, to save some time
 OptionalAptGetUpdate
-DEBIAN_FRONTEND=noninteractive apt-get -y install apt-transport-https
-[[ $? -ne 0 ]] && echo "Error, pre-requisite package apt-transport-https cannot be installed" && exit 1
+apt-get -y install $PREREQ
+[[ $? -ne 0 ]] && echo "Error, pre-requisite package(s) cannot be installed" && exit 1
 
 AZ_REPO=$(lsb_release -cs)
 echo "Adding Microsoft signing key and repository for Ubuntu $AZ_REPO to apt"
@@ -34,7 +42,7 @@ curl -sf https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 [[ $? -ne 0 ]] && echo "Error, Microsoft package signing key cannot be added" && exit 1
 
 # Get the updated repository information (in this case it must be done always, since we have added a new repository)
-DEBIAN_FRONTEND=noninteractive apt-get -y update
+apt-get -y update
 
 echo "Installing package from Microsoft repository"
-DEBIAN_FRONTEND=noninteractive apt-get -y install azure-cli
+apt-get -y install azure-cli
