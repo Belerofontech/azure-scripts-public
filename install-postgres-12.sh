@@ -6,7 +6,13 @@
 
 # Define default variable values if missing
 
-[[ -z "$DBUSER" ]] && DBUSER="belero"
+# MAINUSER is the preferred/expected var to get the desired value from outside; SUDO_USER can be used also,
+# in case MAINUSER is not defined. If none of the two are defined/available, set a default value: "belero"
+[[ -z "$MAINUSER" ]] && [[ ! -z "$SUDO_USER" ]] && [[ "root" != "$SUDO_USER" ]] && MAINUSER="$SUDO_USER"
+[[ -z "$MAINUSER" ]] && MAINUSER="belero"
+echo "Value for MAINUSER variable: $MAINUSER"
+
+[[ -z "$DBUSER" ]] && DBUSER="$MAINUSER"
 echo "Value for DBUSER variable: $DBUSER"
 
 if [[ -z "$DBPASS" ]]
@@ -25,10 +31,10 @@ function OptionalAptGetUpdate()
     [[ $TIME_DIFF -gt 3600 ]] && apt-get -y update
 }
 
-# Check for root permissions (user id = 0) and invocation from sudo
-if [[ $( id -u ) != 0 ]] || [[ -z "$SUDO_USER" ]] || [[ "root" = "$SUDO_USER" ]]
+# Check for root permissions (user id = 0)
+if [[ $( id -u ) != 0 ]]
 then
-    echo "This script must be run with root privileges, with sudo (by a non-root user)"
+    echo "This script must be run with root privileges"
     exit 1
 fi
 
@@ -44,7 +50,7 @@ then
     [[ -z "$DBPASS" ]] && echo "Error generating random password" && exit 1
     # Save password in the current user's home directory. Do not delete previous values just in case
     echo "$DBPASS" >> ~/.postgresqlpass
-    chown $SUDO_USER:$SUDO_USER ~/.postgresqlpass
+    chown $MAINUSER:$MAINUSER ~/.postgresqlpass
     chmod 640 ~/.postgresqlpass
 fi
 
@@ -98,3 +104,7 @@ sudo -u postgres psql -c '\du' 2>/dev/null >/dev/null
 [[ $? -ne 0 ]] && echo "Error, PostgreSQL not installed or not working?" && exit 1
 sudo -u postgres psql -c '\du' | grep " $DBUSER "
 [[ $? -ne 0 ]] && echo "Error, PostgreSQL user does not exist?" && exit 1
+
+# # Optional: use this to force output to be shown, when run remotely on Azure with "run-custom-script.sh" (making the script exit status != 0 means that it didn't finish successfully)
+# echo "FINISHED. Now will end script execution with error status 101..." 1>&2
+# exit 101
