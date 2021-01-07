@@ -78,7 +78,7 @@ fi
 
 if [[ -z "$scriptFilePath" ]]
 then
-    echo "Enter script location:"
+    echo "Enter the script location (file path):"
     read scriptFilePath
     [[ "${scriptFilePath:?}" ]] # Fail (and exit because of set -e) if it is still empty or not defined
 fi
@@ -116,13 +116,13 @@ then
     exit 1
 fi
 
-### Perform several checks with Azure CLI
+### Perform several checks about Azure CLI
 
-# Login to azure using your credentials
 az account show 1> /dev/null
 if [[ $? != 0 ]]
 then
     echo "Executing az login..."
+    # Login to azure using your credentials
     az login --output table || exit 1
 fi
 
@@ -133,7 +133,7 @@ then
 else
     echo "The following subscriptions are available. The one listed with IsDefault=true will be used"
     echo "NOTE: execute 'az account set --subscription xxx' if you need to change the default one"
-    az account list || exit 1
+    az account list --output table || exit 1
     echo
     echo "PLEASE CHECK THAT THIS IS CORRECT. YOU CAN CANCEL WITH CTRL-C IN THE NEXT 20 SECONDS!"
     ( sleep 20 ) || exit 1  # Exit if CTRL-C was pressed
@@ -142,6 +142,7 @@ fi
 # Check for existing RG
 # NOTE: modified by Belerofontech, because the original check wit "az group show" did not always work
 ##az group show --name $resourceGroupName 1> /dev/null
+echo
 az group list --output json | grep -i "\"name\": \"$resourceGroupName\"," 1> /dev/null
 if [[ $? != 0 ]]
 then
