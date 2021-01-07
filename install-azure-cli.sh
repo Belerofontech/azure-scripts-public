@@ -46,3 +46,10 @@ apt-get -y update
 
 echo "Installing package from Microsoft repository"
 apt-get -y install azure-cli
+
+# Check that it is installed OK, and show version info
+az --version
+
+# # Optional: use this to force output to be shown, when run remotely on Azure with "run-custom-script.sh" (making the script exit status != 0 means that it didn't finish successfully)
+# echo "FINISHED. Now will end script execution with error status 101..." 1>&2
+# exit 101
