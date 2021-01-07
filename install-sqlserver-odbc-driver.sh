@@ -82,3 +82,7 @@ echo "Checking for Python module pyodbc"
 python3 -m pip show pyodbc && python3 -m pip check pyodbc
 # NOTE: this could be made informational only (it is not strictly necessary for the driver itself)
 [[ $? -ne 0 ]] && echo "WARNING, Python module pyodbc should be installed too"
+
+# # Optional: use this to force output to be shown, when run remotely on Azure with "run-custom-script.sh" (making the script exit status != 0 means that it didn't finish successfully)
+# echo "FINISHED. Now will end script execution with error status 101..." 1>&2
+# exit 101
