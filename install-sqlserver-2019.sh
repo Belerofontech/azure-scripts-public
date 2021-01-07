@@ -182,7 +182,7 @@ sleep 5
 [[ $? -ne 0 ]] && echo "Warning, the previous command failed, maybe the server is not ready? Waiting a bit..." && sleep 10
 
 echo
-echo "Creating superuser '$DBUSER'"
+echo "Creating superuser '$DBUSER', with password '$DBPASS'"
 sleep 5
 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "$DBPASSSA" \
     -Q "CREATE LOGIN [$DBUSER] WITH PASSWORD=N'$DBPASS', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=ON, CHECK_POLICY=ON; ALTER SERVER ROLE [sysadmin] ADD MEMBER [$DBUSER]"
