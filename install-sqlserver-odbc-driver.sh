@@ -60,7 +60,7 @@ echo "Installing packages from Microsoft repository"
 ACCEPT_EULA=Y apt-get -y install msodbcsql17
 [[ $? -ne 0 ]] && echo "Error, package msodbcsql17 cannot be installed" && exit 1
 
-# Optional: install mssql-tools (bcp and sqlcmd)
+# Install mssql-tools (bcp and sqlcmd)
 ACCEPT_EULA=Y apt-get -y install mssql-tools
 [[ $? -ne 0 ]] && echo "Error, package mssql-tools cannot be installed" && exit 1
 
@@ -79,7 +79,7 @@ fi
 
 echo
 echo "Checking for Python module pyodbc"
-python3 -m pip show pyodbc && python3 -m pip check pyodbc
+sudo -E -u $MAINUSER python3 -m pip show pyodbc && sudo -E -u $MAINUSER python3 -m pip check pyodbc
 # NOTE: this could be made informational only (it is not strictly necessary for the driver itself)
 [[ $? -ne 0 ]] && echo "WARNING, Python module pyodbc should be installed too"
 
