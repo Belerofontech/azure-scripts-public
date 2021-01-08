@@ -24,7 +24,7 @@ fi
 
 echo "Value for MAINUSER variable: $MAINUSER"
 
-sh -xc 'date ; env ; last ; w ; whoami ; pwd'
+sh -xc 'date ; env ; whoami ; pwd'
 
 # Go to the user's HOME dir
 cd /home/$MAINUSER
@@ -37,6 +37,9 @@ git clone https://github.com/Belerofontech/azure-scripts-public
 # Fix script permissions, just in case they are not executable
 cd azure-scripts-public
 find . -name "*.sh" | xargs chmod +x
+
+# Fix owner, if run as sudo
+[[ $( id -u ) = 0 ]] && sudo chown -R $MAINUSER:$MAINUSER .
 
 echo
 echo "BELEROFONTECH - FINISHED CUSTOM 'GIT CLONE AZURE SCRIPTS' INIT!"
