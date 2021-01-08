@@ -105,8 +105,9 @@ apt-get clean
 # Update the file search DB for the "locate" system tool
 updatedb
 
-# Link to the cloud-init logs, to facilitate checking them after VM creation (also allows to indicate that it has almost ended)
+# Link to the cloud-init logs and info, to facilitate checking them after VM creation (also allows to indicate that it has almost ended)
 ln -s /var/log/cloud-init-output.log /home/$MAINUSER
+ln -s /var/lib/cloud/instance/user-data.txt.i /home/$MAINUSER/cloud-config.txt
 
 # Optional: poweroff or reboot system after the config has finished.
 # echo "BELEROFONTECH - WILL REBOOT NOW (IN 2 MINUTES)!"
