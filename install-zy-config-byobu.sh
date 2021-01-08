@@ -29,7 +29,7 @@ then
     byobu-enable-prompt
     byobu-ctrl-a emacs
     # Run at least a simple command inside byobu once, so that it will create all its config files
-    byobu -c "ls -la ~/.byobu"
+    byobu -c "ls -la /home/$MAINUSER/.byobu"
 else
     # Running as root
 
