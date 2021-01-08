@@ -1,5 +1,7 @@
 #!/bin/bash
 # Script to install (clone/download) the GitHub repository with these scripts (azure-scripts-public) on a (Ubuntu) system
+#
+# NOTE: this script can also be used by a normal (non-root) user
 
 echo
 echo "BELEROFONTECH - STARTING CUSTOM 'GIT CLONE AZURE SCRIPTS' INIT!"
