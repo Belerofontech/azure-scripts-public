@@ -38,7 +38,7 @@ git clone https://github.com/Belerofontech/azure-scripts-public
 
 # Fix script permissions, just in case they are not executable
 cd azure-scripts-public
-find . -name "*.sh" | xargs chmod +x
+find . -type f -name "*.sh" | xargs chmod a+x
 
 # Fix owner, if run as sudo
 [[ $( id -u ) = 0 ]] && sudo chown -R $MAINUSER:$MAINUSER .
