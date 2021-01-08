@@ -36,7 +36,7 @@ fi
 # Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
 export DEBIAN_FRONTEND=noninteractive
 
-sh -xc 'date ; whoami ; pwd'
+sh -xc 'date ; env ; whoami ; pwd'
 
 # Install pre-requisite packages and get the updated repository information
 PREREQ="apt-transport-https python3-pip python3-venv python3-wheel unixodbc-dev mdbtools"

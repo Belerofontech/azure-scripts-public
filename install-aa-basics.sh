@@ -27,12 +27,14 @@ fi
 # Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
 export DEBIAN_FRONTEND=noninteractive
 
-sh -xc 'date ; env ; last ; w ; whoami ; pwd'
+sh -xc 'date ; env ; whoami ; pwd'
 
 # More secure permissions for main user's HOME dir
 chmod 0750 /home/$MAINUSER
 
+# Update the repositories' package lists, and upgrade the installed packages!
 apt-get -y update && apt-get -y -u dist-upgrade
+
 # General system tools/utilities packages that we want to be always installed
 apt-get -y install apt-transport-https ca-certificates curl cifs-utils dos2unix colorized-logs ccze byobu gdb zip unzip bc vim neofetch
 # Pyhton-specific packages
