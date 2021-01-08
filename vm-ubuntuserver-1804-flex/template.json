@@ -1,0 +1,355 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.1.0",
+  "parameters": {
+    "fixedTagsVector": {
+      "defaultValue": {
+        "TemplateVersion": "1.4.0.0",
+        "TemplateDate": "2020-12-30",
+        "TemplateName": "vm-ubuntuserver-1804-flex"
+      },
+      "type": "object",
+      "metadata": {
+        "description": "Tags that will be applied to all the resources in order to trace the template used for creating them. DO NOT MODIFY"
+      }
+    },
+    "tagsVector": {
+      "defaultValue": {
+        "Customer": "BELERO",
+        "Project": "AA-NNN-CCCCCC"
+      },
+      "type": "object",
+      "metadata": {
+        "description": "Tags that will be applied to all the resources (use \"{}\" without quotes for an empty list); can be changed manually later from Azure Portal"
+      }
+    },
+    "resourceLocation": {
+      "defaultValue": "",
+      "type": "string",
+      "metadata": {
+        "description": "Azure region in which the resources will be created (it does not need to be the same value than for the resource group); if empty (default value) the resource group location will be used"
+      }
+    },
+    "customData": {
+      "defaultValue": "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",
+      "type": "string",
+      "metadata": {
+        "description": "String passed down to the Virtual Machine initialization. It must be a cloud-init file (cloud-config.txt) encoded in base64 format; more info in https://github.com/Belerofontech/azure-scripts-public/blob/master/vm-ubuntuserver-1804-flex/README.md ; use \"Iw==\" (without quotes; starts with an I as in Italy) for an empty value in base64"
+      }
+    },
+    "DNSPrefixString": {
+      "defaultValue": "belero-",
+      "type": "string",
+      "metadata": {
+        "description": "Optional prefix used for the VM DNS name (it can be empty; the resulting string will be \"prefix+vmname-xxxuniqueidxxx.azureregionname.cloudapp.azure.com\")"
+      },
+      "maxLength": 50
+    },
+    "virtualMachineName": {
+      "type": "string",
+      "metadata": {
+        "description": "Visible name for the VM resource (can not be changed later). All the associated resources (OS Disk, etc.) will use it as a prefix in their names. Please use a descriptive and unique (at least inside the resource group) value"
+      }
+    },
+    "virtualMachineSize": {
+      "defaultValue": "Standard_B2s",
+      "type": "string",
+      "metadata": {
+        "description": "VM size; use values from https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general ; default: \"Standard_B2s\" (2 CPUs, 4 GB RAM); can be changed manually later from Azure Portal, when the VM is powered off"
+      }
+    },
+    "adminUsername": {
+      "defaultValue": "belero",
+      "type": "string"
+    },
+    "diskSizeGB": {
+      "defaultValue": "32",
+      "type": "string",
+      "metadata": {
+        "description": "OS disk size, in GB (default: 32). NOTE: minimum is 30 GB; use sizes in https://docs.microsoft.com/en-us/azure/virtual-machines/windows/about-disks-and-vhds because size will be rounded up to one of those, for pricing; can be changed manually later from Azure Portal, when the VM is powered off, but never to decrease size"
+      }
+    },
+    "storageAccountType": {
+      "defaultValue": "StandardSSD_LRS",
+      "type": "string",
+      "allowedValues": [
+        "Standard_LRS",
+        "StandardSSD_LRS",
+        "Premium_LRS"
+      ],
+      "metadata": {
+        "description": "OS disk type (default: \"StandardSSD_LRS\" for Standard SSD, with intermediate performance between \"Standard_LRS\" and \"Premium_LRS\"; change to \"Standard_LRS\" for Standard -magnetic- HDDs, or to \"Premium_LRS\" for Premium SSD -the initial and faster type of SSDs-). This can also be changed manually later from Azure Portal, when the VM is powered off"
+      }
+    },
+    "publicIpAddressType": {
+      "defaultValue": "Dynamic",
+      "type": "string",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "IP address type (\"Dynamic\"/\"Static\"); can be changed manually later from Azure Portal"
+      }
+    },
+    "adminPublicKey": {
+      "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA6+fB2K6+tGwyg/kz4rfUQmhGYVC8oKG96IrRgEK/OJbzAQijcvjoHIV72VhaXIirfi5jm4+xdZVDDlRYdJcxB9vEZVav6yJtDh/roLjms4q0PiWKzgxWR+CJHnuBgkXKeT8hR2zh6fBpW/lbzdcd0sO2AZRBy+ApD4LyDQbuT6NWDcETVoOPxwJSR6UhkaRRwlchXnQ6PwFtEW9+76vV53aECwgwXV2Bciyipcu25WdBa4mbAGSdAoGBVoghJL5hS7UBlv16K4qojgUiuSDNkSWnCdeHED+t8sR5+nFHt8PRfx2KlwD9OaHr48g19V2BHpTbESdHktLYj9T/Tb/HJw==",
+      "type": "string",
+      "metadata": {
+        "description": "ssh authorized public key to be used for the admin user (required, because user-password logins are disabled by default); see https://blogs.msdn.microsoft.com/cloud_solution_architect/2016/08/24/generating-ssh-keys-for-azure-linux-vms/ for more info; a default value is provided although it is recommended to change it for production use; can be modified at any time from the \"Reset password\" blade in Azure Portal"
+      }
+    },
+    "addressPrefix": {
+      "defaultValue": "10.0.1.0/24",
+      "type": "string"
+    },
+    "subnetName": {
+      "defaultValue": "default",
+      "type": "string"
+    },
+    "subnetPrefix": {
+      "defaultValue": "10.0.1.0/24",
+      "type": "string"
+    },
+    "publicIpAddressSku": {
+      "defaultValue": "Basic",
+      "type": "string"
+    },
+    "autoShutdownStatus": {
+      "defaultValue": "Disabled",
+      "type": "string",
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ],
+      "metadata": {
+        "description": "Enable (or disable) VM daily auto-power-off; possible values: (\"Enabled\"/\"Disabled\"), default: \"Disabled\"; if enabled, the next 5 parameters define the time and notification settings for auto-power-off; can be modified later at any time from Azure Portal"
+      }
+    },
+    "autoShutdownTime": {
+      "defaultValue": "19:00",
+      "type": "string"
+    },
+    "autoShutdownTimeZone": {
+      "defaultValue": "UTC",
+      "type": "string"
+    },
+    "autoShutdownNotificationStatus": {
+      "defaultValue": "Enabled",
+      "type": "string",
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ]
+    },
+    "autoShutdownNotificationEmail": {
+      "defaultValue": "USE_A_REAL_EMAIL_ADDRESS@belerofontech.com",
+      "type": "string"
+    },
+    "autoShutdownNotificationWebhook": {
+      "defaultValue": "",
+      "type": "string"
+    },
+    "autoShutdownNotificationLanguage": {
+      "defaultValue": "en",
+      "type": "string"
+    }
+  },
+  "variables": {
+    "dnsName": "[concat( parameters('DNSPrefixString'), parameters('virtualMachineName'), '-', uniqueString(resourceGroup().id, deployment().name, parameters('virtualMachineName') ) )]",
+    "publicIpAddressName": "[concat( parameters('virtualMachineName'), '-ip-', uniqueString(resourceGroup().id, deployment().name, parameters('virtualMachineName') ) )]",
+    "virtualNetworkName": "[concat( parameters('virtualMachineName'), '-vnet' )]",
+    "networkSecurityGroupName": "[concat( parameters('virtualMachineName'), '-nsg-', uniqueString(resourceGroup().id, deployment().name, parameters('virtualMachineName') ) )]",
+    "networkInterfaceName": "[concat( parameters('virtualMachineName'), '-nic-', uniqueString(resourceGroup().id, deployment().name, parameters('virtualMachineName') ) )]",
+    "vnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+    "osDiskName": "[concat( parameters('virtualMachineName'), '-osdisk-', uniqueString(resourceGroup().id, deployment().name, parameters('virtualMachineName') ) )]",
+    "tagsUnion": "[union(parameters('tagsVector'),parameters('fixedTagsVector'))]",
+    "finalLocation": "[if(equals('', parameters('resourceLocation')), resourceGroup().location, parameters('resourceLocation'))]"
+  },
+  "resources": [
+    {
+      "name": "[parameters('virtualMachineName')]",
+      "tags": "[variables('tagsUnion')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2018-10-01",
+      "location": "[variables('finalLocation')]",
+      "comments": "BELERO vm-ubuntuserver-1804-flex template (Ubuntu Server 18.04 LTS)",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))]"
+      ],
+      "properties": {
+        "osProfile": {
+          "computerName": "[parameters('virtualMachineName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": true,
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+                  "keyData": "[parameters('adminPublicKey')]"
+                }
+              ]
+            }
+          },
+          "customData": "[parameters('customData')]"
+        },
+        "hardwareProfile": {
+          "vmSize": "[parameters('virtualMachineSize')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "18.04-LTS",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "fromImage",
+            "diskSizeGB": "[parameters('diskSizeGB')]",
+            "name": "[variables('osDiskName')]",
+            "managedDisk": {
+              "storageAccountType": "[parameters('storageAccountType')]"
+            }
+          },
+          "dataDisks": []
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "[concat('shutdown-computevm-', parameters('virtualMachineName'))]",
+      "tags": "[variables('tagsUnion')]",
+      "type": "Microsoft.DevTestLab/schedules",
+      "apiVersion": "2018-09-15",
+      "location": "[variables('finalLocation')]",
+      "properties": {
+        "status": "[parameters('autoShutdownStatus')]",
+        "taskType": "ComputeVmShutdownTask",
+        "dailyRecurrence": {
+          "time": "[parameters('autoShutdownTime')]"
+        },
+        "timeZoneId": "[parameters('autoShutdownTimeZone')]",
+        "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]",
+        "notificationSettings": {
+          "status": "[parameters('autoShutdownNotificationStatus')]",
+          "emailRecipient": "[parameters('autoShutdownNotificationEmail')]",
+          "webhookUrl": "[parameters('autoShutdownNotificationWebhook')]",
+          "notificationLocale": "[parameters('autoShutdownNotificationLanguage')]",
+          "timeInMinutes": 30
+        }
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "name": "[variables('virtualNetworkName')]",
+      "tags": "[variables('tagsUnion')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2018-02-01",
+      "location": "[variables('finalLocation')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('addressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnetPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('networkInterfaceName')]",
+      "tags": "[variables('tagsUnion')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2018-04-01",
+      "location": "[variables('finalLocation')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+        "[concat('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]",
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              },
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIpAddress": {
+                "id": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', variables('publicIpAddressName'))]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+        }
+      }
+    },
+    {
+      "name": "[variables('publicIpAddressName')]",
+      "tags": "[variables('tagsUnion')]",
+      "type": "Microsoft.Network/publicIpAddresses",
+      "apiVersion": "2019-12-01",
+      "location": "[variables('finalLocation')]",
+      "properties": {
+        "publicIpAllocationMethod": "[parameters('publicIpAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('dnsName')]"
+        }
+      },
+      "sku": {
+        "name": "[parameters('publicIpAddressSku')]"
+      }
+    },
+    {
+      "name": "[variables('networkSecurityGroupName')]",
+      "tags": "[variables('tagsUnion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2018-01-01",
+      "location": "[variables('finalLocation')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "SSH",
+            "properties": {
+              "priority": 300,
+              "protocol": "TCP",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourceApplicationSecurityGroups": [],
+              "destinationApplicationSecurityGroups": [],
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "22"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "adminUsername": {
+      "type": "string",
+      "value": "[parameters('adminUsername')]"
+    }
+  }
+}
