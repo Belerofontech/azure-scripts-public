@@ -1,18 +1,18 @@
 #include
 https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-aa-basics.sh
 https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-ab-git-azure-scripts.sh
-https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-azure-cli.sh
-https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-postgres-12.sh
-https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-sqlserver-odbc-driver.sh
-https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-sqlserver-2019.sh
-# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-pip-packages.sh
-# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-airflow.sh
-https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-zy-config-byobu.sh
 https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-zz-config-env-final.sh
 
-#
-# cloud-init config file used in the "vm-ubuntuserver-1804-flex" template
+# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-azure-cli.sh
+# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-postgres-12.sh
+# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-sqlserver-odbc-driver.sh
+# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-sqlserver-2019.sh
+# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-pip-packages.sh
+# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-airflow.sh
+# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-byobu-config.sh
 
+# cloud-init config file used in the "vm-ubuntuserver-1804-flex" template
+#
 # code: language=yaml
 # vim: set ft=yaml:expandtab:ts=2
 # The previous lines enable syntax highlighting, etc. in VS Code and vim. KEEP THEM AT THE VERY END OF THE FILE! For more info see:
