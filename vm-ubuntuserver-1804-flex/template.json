@@ -130,7 +130,7 @@
         "Enabled"
       ],
       "metadata": {
-        "description": "Enable (or disable) VM daily auto-power-off; possible values: (\"Enabled\"/\"Disabled\"), default: \"Disabled\"; if enabled, the next 5 parameters define the time and notification settings for auto-power-off; can be modified later at any time from Azure Portal"
+        "description": "Enable (or disable) VM daily auto-power-off; possible values: (\"Enabled\"/\"Disabled\"), default: \"Disabled\"; if enabled, the next 6 parameters define the time and notification settings for auto-power-off; can be modified later at any time from Azure Portal"
       }
     },
     "autoShutdownTime": {
