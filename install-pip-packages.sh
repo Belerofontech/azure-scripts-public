@@ -3,9 +3,6 @@
 #
 # Based on the previous cloud-config.txt file (runcmd section) from the former "vm-ubuntuserver-1804" template (...)
 
-echo
-echo "BELEROFONTECH - STARTING CUSTOM 'PYTHON PIP' INIT!"
-
 # Optional: more debug info (show executed commands)
 # set -x
 
@@ -32,6 +29,12 @@ then
     echo "This script must be run with root privileges"
     exit 1
 fi
+
+echo "NOTE: this script is deprecated, and should be used only for testing"
+echo "You should better use a Python virtual env and requirements.txt files!"
+echo
+echo "DO YOU WANT TO PROCEED? YOU CAN CANCEL WITH CTRL-C IN THE NEXT 60 SECONDS!"
+( sleep 60 ) || exit 1  # Exit if CTRL-C was pressed
 
 # Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
 export DEBIAN_FRONTEND=noninteractive
@@ -62,9 +65,6 @@ sudo -E -u $MAINUSER python3 -m pip install --user pandas pyomo xlwt xlrd openpy
 # Check that all dependencies are OK
 echo
 sudo -E -u $MAINUSER python3 -m pip check
-
-echo
-echo "BELEROFONTECH - FINISHED CUSTOM 'PYTHON PIP' INIT!"
 
 # # Optional: use this to force output to be shown, when run remotely on Azure with "run-custom-script.sh" (making the script exit status != 0 means that it didn't finish successfully)
 # echo "FINISHED. Now will end script execution with error status 101..." 1>&2
