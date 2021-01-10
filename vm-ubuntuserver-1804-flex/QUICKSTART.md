@@ -18,23 +18,27 @@ Script usage:
 
 Parameters meaning:
 
-* resourceGroupName: Azure RM resource group where the VM will be created. The groug will be created if it did not exist.
+* `resourceGroupName`: Azure RM resource group where the VM will be created. The groug will be created if it did not exist.
 
-* deploymentName: name for the creation task (useful for logs and monitoring from Azure Portal). If the script is used several times in a row, it is advisable to use **different deployment names** for each one, for clarity.
+* `deploymentName`: name for the creation task (useful for logs and monitoring from Azure Portal). If the script is used several times in a row, it is advisable to use **different deployment names** for each one, for clarity.
 
-* resourceGroupLocation: Azure region (e.g. "westeurope") used if creating a new resource group.
+* `resourceGroupLocation`: Azure region (e.g. "westeurope") used if creating a new resource group.
 
-All the script parameters are optional, and the script asks for them if not present (except for subscriptionId, because the current/active one will be used; and resourceGroupLocation -- "westeurope" is the default value).
+* `optional_extra_parameters_for_create`: VM creation template parameters can be added here, and will be passed to the deployment command. Any of the parameters used by the template (defined in `parameters.json`) can be used; see examples below.
+
+All the script parameters are optional, and it will ask for them if not present (except for subscriptionId, because the current/active one will be used; and resourceGroupLocation, for which **"westeurope" is the default value**).
 
 Needed steps:
 
-1. Review the parameters used by the template (defined in **parameters.json**), if needed (VM size, etc.). Most of them can be modified afterwards in an easier way, from Azure Portal, once the VM is created (and powered off). It is important to check, specifically:
+1. Review the parameters used by the template (defined in `parameters.json`), if needed (VM size, etc.). Most of them can be modified afterwards in an easier way, from Azure Portal, once the VM is created (and powered off). It is important to check, specifically:
 
-    * resourceLocation: Azure region (default: "westeurope") used for the new resources. NOTE that it does not need to be the same value than for the resource group.
+    * resourceLocation: Azure region used for the new resources created. NOTE that it does not need to be the same value than for the resource group, but if the parameter value is empty (default case), the **resource group location** will be used.
 
-    It the default value is not OK, it can be modified in the command line (recommended way, see examples below). So, normally we don't need to modify the parameters.json file...
+    * virtualMachineName: a descriptive name for the VM; this parameter is **required**, and has no default value (it will be asked for interactively, if not specified).
 
-2. Review the provided `cloud-config.txt` file, or delete/rename it (in that case, the VM will be the default Azure Ubuntu 18.04 image with no further modifications). If the parameter is not specified, the default "cloud-config.txt" file will be used.
+    It any of the default values is not OK, it can also be modified in the command line (recommended way, see examples below). So, normally we don't even need to modify the `parameters.json` file...
+
+2. Review the provided `cloud-config.txt` file (add/remove or comment/uncomment the desired lines, with URLs pointing to the .sh scripts or other cloud-init .txt files to be used during the VM initialization; NOTE: they are invoked in the specified order).
 
 3. Edit the `example-tags.json` file, and specify at least the correct customer, project and environment (for example, "Testing") details for the resource tags.
 
