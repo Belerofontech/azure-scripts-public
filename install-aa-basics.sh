@@ -42,19 +42,9 @@ apt-get -y install python3-pip python3-venv python3-wheel unixodbc-dev mdbtools
 # # Optional: install Cbc and GLPK solvers
 # apt-get -y install coinor-cbc glpk-utils
 
-# Remove some of the default system info shown at each login
-apt-get -y remove landscape-common
-systemctl disable motd-news.timer
-chmod -x /etc/update-motd.d/00-header
-chmod -x /etc/update-motd.d/10-help-text
-chmod -x /etc/update-motd.d/50-motd-news
-chmod -x /etc/update-motd.d/91-release-upgrade
-# More "drastic" alternative to the previous lines:
-#   rm -f /etc/update-motd.d/00-header /etc/update-motd.d/10-help-text /etc/update-motd.d/50-motd-news /etc/update-motd.d/91-release-upgrade
-
 # # Optional: Remove Python 2 and set Python 3 as the default for scripts that use just "python". From:
 # # https://stackoverflow.com/a/50331137
-# apt-get -y remove python2.7 python2.7-minimal python-minimal
+# apt-get -y remove python2.7-minimal python-minimal
 # # TO-DO: check, the following line is not needed really...
 # # update-alternatives --remove python /usr/bin/python2
 # update-alternatives --install /usr/bin/python python /usr/bin/python3 10

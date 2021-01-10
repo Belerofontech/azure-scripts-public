@@ -57,6 +57,16 @@ history -r && history -s echo @@@ LOGIN @@@ \$(last -n1 --time iso | head -n1)
 EOF
 chmod 0755 /etc/profile.d/Z99-zz-belero.sh
 
+# Remove some of the default system info shown at each login
+apt-get -y remove landscape-common
+systemctl disable motd-news.timer
+chmod -x /etc/update-motd.d/00-header
+chmod -x /etc/update-motd.d/10-help-text
+chmod -x /etc/update-motd.d/50-motd-news
+chmod -x /etc/update-motd.d/91-release-upgrade
+# More "drastic" alternative to the previous lines:
+#   rm -f /etc/update-motd.d/00-header /etc/update-motd.d/10-help-text /etc/update-motd.d/50-motd-news /etc/update-motd.d/91-release-upgrade
+
 # Customized system info shown at each login
 # Originally, there was a similar behaviour with 50-landscape-sysinfo (symlink to /usr/share/landscape/landscape-sysinfo.wrapper ...)
 cat > /etc/update-motd.d/50-belero-sysinfo << EOF
@@ -102,12 +112,15 @@ chmod 0644 /media/belero/README.txt
 apt-get -y autoremove
 apt-get clean
 
-# Update the file search DB for the "locate" system tool
-updatedb
-
 # Link to the cloud-init logs and info, to facilitate checking them after VM creation (also allows to indicate that it has almost ended)
 ln -s /var/log/cloud-init-output.log /home/$MAINUSER
 ln -s /var/lib/cloud/instance/user-data.txt.i /home/$MAINUSER/cloud-config.txt
+
+# Update the file search DB for the "locate" system tool
+updatedb
+
+# Notification message (in case some user has already logged in)
+wall "BELEROFONTECH - FINISHED CUSTOM 'FINAL CONFIG AND ENVIRONMENT' INIT!"
 
 # Optional: poweroff or reboot system after the config has finished.
 # echo "BELEROFONTECH - WILL REBOOT NOW (IN 2 MINUTES)!"
