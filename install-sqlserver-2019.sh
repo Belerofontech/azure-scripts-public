@@ -26,8 +26,8 @@ echo "Value for DBLICENSE variable: $DBLICENSE"
 
 if [[ -z "$DBPASS" ]]
 then
-    [[ -r ~/.sqlserverpass ]] && DBPASS=$( tail -n1 ~/.sqlserverpass )
-    [[ -e ~/.sqlserverpass ]] && [[ -z "$DBPASS" ]] && echo "Invalid DBPASS variable or ~/.sqlserverpass file" && exit 1
+    [[ -r /home/$MAINUSER/.sqlserverpass ]] && DBPASS=$( tail -n1 /home/$MAINUSER/.sqlserverpass )
+    [[ -e /home/$MAINUSER/.sqlserverpass ]] && [[ -z "$DBPASS" ]] && echo "Invalid DBPASS variable or /home/$MAINUSER/.sqlserverpass file" && exit 1
 fi
 echo "Value for DBPASS variable: $DBPASS"
 
@@ -87,9 +87,9 @@ then
     DBPASS=$( base64 -w20 /dev/urandom 2>/dev/null | grep -e "+\|/" | head -n1 2>/dev/null )
     [[ -z "$DBPASS" ]] && echo "Error generating random password" && exit 1
     # Save password in the current user's home directory. Do not delete previous values just in case
-    echo "$DBPASS" >> ~/.sqlserverpass
-    chown $MAINUSER:$MAINUSER ~/.sqlserverpass
-    chmod 640 ~/.sqlserverpass
+    echo "$DBPASS" >> /home/$MAINUSER/.sqlserverpass
+    chown $MAINUSER:$MAINUSER /home/$MAINUSER/.sqlserverpass
+    chmod 640 /home/$MAINUSER/.sqlserverpass
 fi
 
 # Install pre-requisite packages and get the updated repository information

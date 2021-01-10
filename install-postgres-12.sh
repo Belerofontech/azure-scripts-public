@@ -17,8 +17,8 @@ echo "Value for DBUSER variable: $DBUSER"
 
 if [[ -z "$DBPASS" ]]
 then
-    [[ -r ~/.postgresqlpass ]] && DBPASS=$( tail -n1 ~/.postgresqlpass )
-    [[ -e ~/.postgresqlpass ]] && [[ -z "$DBPASS" ]] && echo "Invalid DBPASS variable or ~/.postgresqlpass file" && exit 1
+    [[ -r /home/$MAINUSER/.postgresqlpass ]] && DBPASS=$( tail -n1 /home/$MAINUSER/.postgresqlpass )
+    [[ -e /home/$MAINUSER/.postgresqlpass ]] && [[ -z "$DBPASS" ]] && echo "Invalid DBPASS variable or /home/$MAINUSER/.postgresqlpass file" && exit 1
 fi
 echo "Value for DBPASS variable: $DBPASS"
 
@@ -49,9 +49,9 @@ then
     DBPASS=$( od -An -x /dev/urandom 2>/dev/null | tr -d ' \n' 2>/dev/null | head -c20 2>/dev/null )
     [[ -z "$DBPASS" ]] && echo "Error generating random password" && exit 1
     # Save password in the current user's home directory. Do not delete previous values just in case
-    echo "$DBPASS" >> ~/.postgresqlpass
-    chown $MAINUSER:$MAINUSER ~/.postgresqlpass
-    chmod 640 ~/.postgresqlpass
+    echo "$DBPASS" >> /home/$MAINUSER/.postgresqlpass
+    chown $MAINUSER:$MAINUSER /home/$MAINUSER/.postgresqlpass
+    chmod 640 /home/$MAINUSER/.postgresqlpass
 fi
 
 # Install pre-requisite packages and get the updated repository information
