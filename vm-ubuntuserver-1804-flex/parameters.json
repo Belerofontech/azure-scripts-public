@@ -11,6 +11,12 @@
     "resourceLocation": {
       "value": ""
     },
+    "cloudInitConfig": {
+      "value": "#include\n###WARNING: EDIT IN THE JSON SOURCE ONLY!!!###\nhttps://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-aa-basics.sh\nhttps://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-ab-git-azure-scripts.sh\nhttps://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-zz-config-env-final.sh"
+    },
+    "customData": {
+        "value": ""
+    },
     "DNSPrefixString": {
       "value": "belero-"
     },
