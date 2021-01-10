@@ -121,12 +121,13 @@ if [[ ! -z "$subscriptionId" ]]
 then
     az account set --subscription $subscriptionId
 else
-    echo "The following subscriptions are available. The one listed with IsDefault=true will be used"
-    echo "NOTE: execute 'az account set --subscription xxx' if you need to change the default one"
+    echo "The following subscriptions are available. The one listed with IsDefault=true will be used:"
     az account list --output table || exit 1
     echo
+    echo "NOTE: execute 'az account set --subscription xxx' if you need to change the default one"
+    echo
     echo "PLEASE CHECK THAT THIS IS CORRECT. YOU CAN CANCEL WITH CTRL-C IN THE NEXT 20 SECONDS!"
-    ( sleep 20 ) || exit 1  # Exit if CTRL-C was pressed
+    ( read -t 20 ) || exit 1  # Exit if CTRL-C was pressed
 fi
 
 # Check for existing RG
@@ -152,16 +153,18 @@ then
     cldcfg=$(wc -c "$cloudConfigFileName" | awk '{print $1}')
     if [[ $cldcfg -ne 0 ]]
     then
-        echo "Found non-empty cloud-init config file \"$cloudConfigFileName\"..."
+        echo "Found non-empty cloud-init config file \"$cloudConfigFileName\". Validating..."
         #Validate the cloud-init config file!
-        cloud-init devel schema --config-file "$cloudConfigFileName" || VALID_ERROR=1
         [[ $cldcfg -gt 65535 ]] && echo "Error: file too big; max. allowed size is 65535 bytes" && exit 1
+        cloud-init devel schema --config-file "$cloudConfigFileName" || VALID_ERROR=1
         if [[ "$VALID_ERROR" == "1" ]]
         then
             echo
-            echo "WARNING: file did not validate correctly. Please check if it is really valid..."
-            echo "YOU CAN CANCEL WITH CTRL-C IN THE NEXT 20 SECONDS!"
-            ( sleep 20 ) || exit 1  # Exit if CTRL-C was pressed
+            echo "WARNING: file did not validate correctly"
+            head -n1 "$cloudConfigFileName" | grep -q "^#include$" && echo "This is expected if only the #include directive is used, as seems to be the case..."
+            echo
+            echo "PLEASE CHECK THAT THIS IS CORRECT. YOU CAN CANCEL WITH CTRL-C IN THE NEXT 20 SECONDS!"
+            ( read -t 20 ) || exit 1  # Exit if CTRL-C was pressed
         fi
         cldvalue=$(gzip -c "$cloudConfigFileName" | base64 -w0)
         cldparam="customData=$cldvalue"
@@ -169,6 +172,8 @@ then
         echo "Found empty cloud-init config file \"$cloudConfigFileName\". It can not be used!"
         exit 1
     fi
+else
+    echo "WARNING: no cloud-init config file \"$cloudConfigFileName\" found..."
 fi
 
 # NOTE: Section added by Belerofontech, to allow for extra parameters
@@ -181,11 +186,13 @@ fi
 # Start deployment
 echo "Starting deployment..."
 (
+    echo
     set -x  # more debug info (show executed commands), only for this block (run in a sub-shell)
     az group deployment create --verbose --name "$deploymentName" --resource-group "$resourceGroupName" --template-file "$templateFilePath" --parameters "@${parametersFilePath}" ${optparam:-} ${cldparam:-} "$@"
 )
 if [[ $? == 0 ]]
 then
+    echo
     echo "Template has been successfully deployed. Available VMs in the resource group:"
     # NOTE: Added by Belerofontech, to get info about the newly created VM
     az vm list --show-details --resource-group "$resourceGroupName" --output table
