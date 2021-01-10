@@ -1,5 +1,11 @@
 # azure-scripts-public/vm-ubuntuserver-1804-flex
 
+- [VM creation parameters (ARM template parameters)](#vm-creation-parameters-arm-template-parameters)
+  - [VM characteristics which are not modifiable](#vm-characteristics-which-are-not-modifiable)
+- [deploy.sh usage (from Linux shell)](#deploysh-usage-from-linux-shell)
+  - [cloud-config.txt](#cloud-configtxt)
+- [Template changelog](#template-changelog)
+
 Azure ARM templates and scripts for creating Ubuntu Server 18.04 VMs in an automated way.
 
 NOTE: [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest) and Linux (WSL works too) are required for the `deploy.sh` script.
