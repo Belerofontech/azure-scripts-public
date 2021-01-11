@@ -86,7 +86,7 @@ sleep 5
 # Normally we would use systemctl status postgresql --no-pager but in this case "cat" works too...
 service postgresql status | cat
 
-cd /  # Avoid problems with home directory permissions when using sudo with non-root users
+cd /  # Avoid problems with home directory permissions when using sudo to run commands as the postgres user
 
 echo
 echo "Creating superuser '$DBUSER'"
