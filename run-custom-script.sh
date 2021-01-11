@@ -19,7 +19,10 @@ IFS=$'\n\t'
 # Optional: more debug info (show executed commands)
 # set -x
 
-usage() { echo "Usage: $0 -i <subscriptionId> -g <resourceGroupName> -n <vmName> -s <scriptName>" 1>&2; exit 1; }
+function HelpUsage() { echo "Usage: $0 -i <subscriptionId> -g <resourceGroupName> -n <vmName> -s <scriptName>" 1>&2; exit 1; }
+
+# Sleep for a specified time (5 sec. if no parameters), which can be skipped by pressing ENTER. (NOTE: works OK with set -e)
+function WaitTimeout() { read -t ${1:-5} || true; }  # Wait for x or 5 seconds, and never fail
 
 # Azure subscription id: define a value if needed (or see below for more details)
 declare subscriptionId=""
@@ -45,7 +48,7 @@ do
             ;;
         *)
             echo "Invalid option(s)"
-            usage
+            HelpUsage
             ;;
     esac
 done
@@ -136,7 +139,7 @@ else
     az account list --output table || exit 1
     echo
     echo "PLEASE CHECK THAT THIS IS CORRECT. YOU CAN CANCEL WITH CTRL-C IN THE NEXT 20 SECONDS!"
-    ( sleep 20 ) || exit 1  # Exit if CTRL-C was pressed
+    WaitTimeout 20  # Exits if error, or CTRL-C was pressed
 fi
 
 # Check for existing RG
