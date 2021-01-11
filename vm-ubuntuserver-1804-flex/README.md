@@ -1,10 +1,15 @@
 # azure-scripts-public/vm-ubuntuserver-1804-flex
 
+- [Introduction](#Introduction)
 - [VM creation parameters (ARM template parameters)](#vm-creation-parameters-arm-template-parameters)
   - [VM characteristics which are not modifiable](#vm-characteristics-which-are-not-modifiable)
 - [deploy.sh usage (from Linux shell)](#deploysh-usage-from-linux-shell)
   - [cloud-config.txt](#cloud-configtxt)
 - [Template changelog](#template-changelog)
+
+---
+
+## Introduction
 
 Azure ARM templates and scripts for creating Ubuntu Server 18.04 VMs in an automated way.
 
@@ -24,8 +29,9 @@ Deploying methods for this template:
 
   [![Deploy to Azure](https://azuredeploy.net/deploybutton.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FBelerofontech%2Fazure-scripts-public%2Fmaster%2Fvm-ubuntuserver-1804-flex%2Ftemplate.json)
 
-NOTE: when using Azure Portal, pay special care to the resource group location (**"westeurope" is the recommended value**). Also, **don't edit the cloudInitConfig parameter** because the new-line characters are not handled correctly there. If you need to use a specific cloud-init config, set the desired value inside the template.json file in the "Edit template" screen (before pressing "Save" and getting to the parameters form screen) or use a base64-encoded config in the **customData** parameter instead.
+NOTE: when using Azure Portal, pay special care to the resource group location (**"westeurope" is the recommended value**). Also, **don't edit the cloudInitConfig parameter** in the parameter form because the new-line characters are not handled correctly there. If you need to use a specific cloud-init config, set the desired value inside the template.json file in the "Edit template" screen (or the "Edit parameters" screen) or use a base64-encoded config in the **customData** parameter instead.
 
+<a id="markdown-vm-creation-parameters-arm-template-parameters" name="vm-creation-parameters-arm-template-parameters"></a>
 ## VM creation parameters (ARM template parameters)
 
 **NOTE**: it is not recommended (nor needed normally) to modify the `template.json` file.
@@ -66,6 +72,7 @@ The most important template parameters are:
 
   NOTE: To use no cloud-init custom initialization, make sure no `cloud-config.txt` file is present if using `deploy.sh` (and don't specify a different one with the `-c` parameter), and set **customData** to `Iw==` (empty value in base64, starts with uppercase i). With no cloud-init data, the VM will be the default Azure Ubuntu 18.04 image with **no further modifications**.
 
+<a id="markdown-vm-characteristics-which-are-not-modifiable" name="vm-characteristics-which-are-not-modifiable"></a>
 ### VM characteristics which are not modifiable
 
 In the ARM template, the following characteristics are hardcoded and cannot be changed easily:
@@ -78,6 +85,7 @@ In the ARM template, the following characteristics are hardcoded and cannot be c
 
   * NOTE: for very big disks which are not fully used, it could be more cost-effective to use unmanaged disks (see [this doc](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/standard-storage#pricing-and-billing)), specially for Standard HDDs. Note that in that case transaction costs apply, and that the VM needs to be modified substantially to be able to use unmanaged disks (...)
 
+<a id="markdown-deploysh-usage-from-linux-shell" name="deploysh-usage-from-linux-shell"></a>
 ## deploy.sh usage (from Linux shell)
 
 Script usage:
@@ -144,6 +152,7 @@ Finally, a very complete and **recommended usage example**, without modifying an
 
 NOTE: in this example, **only** the tags in the `example-tags.json` file will be used, and the ones in `parameters.json` and `template.json` will be ignored. This is the **recommended** way to specify tags (because this parameter needs to be in JSON format, and it is harder to write it correctly in a shell command line).
 
+<a id="markdown-cloud-configtxt" name="cloud-configtxt"></a>
 ### cloud-config.txt
 
 The cloud-config.txt file is a YAML-format file that defines [**cloud-init** settings](https://cloudinit.readthedocs.io/en/latest/topics/examples.html) for the user/custom VM initialization (other Azure initialization is performed before that, and it is not configurable).
@@ -161,6 +170,7 @@ The currently used content (**cloudInitConfig** parameter, in the `parameters.js
 
 NOTE: Python packages (pip) are not installed during VM initialization anymore.
 
+<a id="markdown-template-changelog" name="template-changelog"></a>
 ## Template changelog
 
 * Version: 2.0.0.0, 2021-01-11
