@@ -48,14 +48,14 @@
       "defaultValue": "belero-",
       "type": "string",
       "metadata": {
-        "description": "Optional prefix used for the VM DNS name (it can be empty; the resulting string will be \"prefix+vmname-xxxuniqueidxxx.azureregionname.cloudapp.azure.com\")"
+        "description": "OPTIONAL prefix used for the VM DNS name\nNOTES: it can be empty; LEAVE EMPTY if VM name length is a concern; the resulting string will be \"prefix+vmname-xxxuniqueidxxx.azureregionname.cloudapp.azure.com\""
       },
       "maxLength": 50
     },
     "virtualMachineName": {
       "type": "string",
       "metadata": {
-        "description": "Visible name for the VM resource (can not be changed later). All the associated resources (OS Disk, etc.) will use it as a prefix in their names. Please use a descriptive and unique (at least inside the resource group) value"
+        "description": "NOTE: max. length recommended: 20 chars. Visible name for the VM resource (can not be changed later). All the associated resources (OS Disk, etc.) will use it as a prefix in their names. Please use a descriptive and unique (at least inside the resource group) value"
       }
     },
     "virtualMachineSize": {
