@@ -34,7 +34,7 @@ echo "NOTE: this script is deprecated, and should be used only for testing"
 echo "You should better use a Python virtual env and requirements.txt files!"
 echo
 echo "DO YOU WANT TO PROCEED? YOU CAN CANCEL WITH CTRL-C IN THE NEXT 60 SECONDS!"
-( sleep 60 ) || exit 1  # Exit if CTRL-C was pressed
+sleep 60
 
 # Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
 export DEBIAN_FRONTEND=noninteractive
