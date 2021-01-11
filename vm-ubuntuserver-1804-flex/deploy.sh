@@ -12,7 +12,10 @@ IFS=$'\n\t'
 # set -x
 
 # NOTE: New parameters and comments added by Belerofontech
-usage() { echo "Usage: $0 [-i <subscriptionId>] [-g <resourceGroupName>] [-n <deploymentName>] [-l <resourceGroupLocation>] [-c <cloud-config-txt-filename>] [optional_extra_parameters_for_create]" 1>&2; exit 1; }
+function HelpUsage() { echo "Usage: $0 [-i <subscriptionId>] [-g <resourceGroupName>] [-n <deploymentName>] [-l <resourceGroupLocation>] [-c <cloud-config-txt-filename>] [optional_extra_parameters_for_create]" 1>&2; exit 1; }
+
+# Sleep for a specified time (5 sec. if no parameters), which can be skipped by pressing ENTER. (NOTE: works OK with set -e)
+function WaitTimeout() { read -t ${1:-5} || true; }  # Wait for x or 5 seconds, and never fail
 
 # Azure subscription id: define a value if needed (or see below for more details)
 declare subscriptionId=""
@@ -42,7 +45,7 @@ do
             ;;
         *)
             echo "Invalid option(s)"
-            usage
+            HelpUsage
             ;;
     esac
 done
@@ -127,7 +130,7 @@ else
     echo "NOTE: execute 'az account set --subscription xxx' if you need to change the default one"
     echo
     echo "PLEASE CHECK THAT THIS IS CORRECT. YOU CAN CANCEL WITH CTRL-C IN THE NEXT 20 SECONDS!"
-    ( read -t 20 ) || exit 1  # Exit if CTRL-C was pressed
+    WaitTimeout 20  # Exits if error, or CTRL-C was pressed
 fi
 
 # Check for existing RG
@@ -164,7 +167,7 @@ then
             head -n1 "$cloudConfigFileName" | grep -q "^#include$" && echo "This is expected if only the #include directive is used, as seems to be the case..."
             echo
             echo "PLEASE CHECK THAT THIS IS CORRECT. YOU CAN CANCEL WITH CTRL-C IN THE NEXT 20 SECONDS!"
-            ( read -t 20 ) || exit 1  # Exit if CTRL-C was pressed
+            WaitTimeout 20  # Exits if error, or CTRL-C was pressed
         fi
         cldvalue=$(gzip -c "$cloudConfigFileName" | base64 -w0)
         cldparam="customData=$cldvalue"
