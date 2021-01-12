@@ -45,10 +45,10 @@
       }
     },
     "DNSPrefixString": {
-      "defaultValue": "belero-",
+      "defaultValue": "belero-vm-ub18",
       "type": "string",
       "metadata": {
-        "description": "OPTIONAL prefix used for the VM DNS name\nNOTES: it can be empty; LEAVE EMPTY if VM name length is a concern; the resulting string will be \"prefix+vmname-xxxuniqueidxxx.azureregionname.cloudapp.azure.com\""
+        "description": "Prefix used for the VM DNS name\nNOTE: should not be empty; USE SHORT VALUES if VM name length is a concern; the resulting string will be \"prefix-xxxuniqueidxxx.azureregionname.cloudapp.azure.com\""
       },
       "maxLength": 50
     },
@@ -163,7 +163,7 @@
     }
   },
   "variables": {
-    "dnsName": "[concat( parameters('DNSPrefixString'), parameters('virtualMachineName'), '-', uniqueString(resourceGroup().id, deployment().name, parameters('virtualMachineName') ) )]",
+    "dnsName": "[concat( parameters('DNSPrefixString'), '-', uniqueString(resourceGroup().id, deployment().name, parameters('virtualMachineName') ) )]",
     "publicIpAddressName": "[concat( parameters('virtualMachineName'), '-ip-', uniqueString(resourceGroup().id, deployment().name, parameters('virtualMachineName') ) )]",
     "virtualNetworkName": "[concat( parameters('virtualMachineName'), '-vnet' )]",
     "networkSecurityGroupName": "[concat( parameters('virtualMachineName'), '-nsg-', uniqueString(resourceGroup().id, deployment().name, parameters('virtualMachineName') ) )]",

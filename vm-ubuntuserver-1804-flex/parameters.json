@@ -18,7 +18,7 @@
         "value": ""
     },
     "DNSPrefixString": {
-      "value": "belero-"
+      "value": "belero-vm-ub18"
     },
     "virtualMachineSize": {
       "value": "Standard_B2s"
