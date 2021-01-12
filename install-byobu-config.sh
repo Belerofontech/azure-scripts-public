@@ -25,6 +25,9 @@ then
     [[ -z "$MAINUSER" ]] && echo "Error, cannot automatically set the value for MAINUSER variable. Try using sudo?" && exit 1
 
     # Configure and auto-activate byobu at login
+    echo | tee -a /home/$MAINUSER/.profile
+    echo '# Belerofontech - Help before launching byobu. Can be skipped with ENTER' | tee -a /home/$MAINUSER/.profile
+    echo 'read -s -t 5 -p "BELEROFONTECH - BYOBU. F1: help (PuTTY: keyb. cfg. \"Xterm R6\") Alt-F12: mouse!"' | tee -a /home/$MAINUSER/.profile
     byobu-enable
     byobu-enable-prompt
     byobu-ctrl-a emacs
