@@ -4,6 +4,8 @@ https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/instal
 https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-ab-git-azure-scripts.sh
 https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-zz-config-env-final.sh
 
+# NOTE: the following scripts can be used too, but it is BETTER TO RUN THEM MANUALLY AFTER cloud-init! 
+#
 # https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-azure-cli.sh
 # https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-postgres-12.sh
 # https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-sqlserver-odbc-driver.sh
