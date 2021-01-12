@@ -54,6 +54,8 @@ cat > /etc/profile.d/Z99-zz-belero.sh << EOF
 # Belerofontech: set vim as default editor
 export EDITOR=vim
 export VISUAL=vim
+# Belerofontech make less interpret terminal colors
+export LESS=-R
 # Belerofontech matplotlib configuration for headless server
 export MPLBACKEND=agg
 # Belerofontech hack to add some debug info to the user history (access time, IP address, etc.) at login
