@@ -3,16 +3,10 @@
 #
 # Based on the previous cloud-config.txt file (runcmd and write_files sections) from the former "vm-ubuntuserver-1804" template (...)
 #
-# NOTE: this script can also be used by a normal (non-root) user
 # NOTE: the byobu config is applied to ONE user only!
-
-echo
-echo "BELEROFONTECH - STARTING CUSTOM 'BYOBU CONFIG AND ENVIRONMENT' INIT!"
-
-# Optional: more debug info (show executed commands)
-# set -x
-
-sh -xc 'date ; env ; whoami ; pwd'
+#
+# NOTE: this script can also be used by a normal (non-root) user
+# NOTE: in that case, it will not write its output to /var/log (...)
 
 # Define default variable values if missing
 # NOTE: in this case, only MAINUSER can be defined/used, and only if runnig as root
@@ -49,6 +43,21 @@ else
     # Run at least a simple command inside byobu once, so that it will create all its config files
     sudo -E -u $MAINUSER byobu -c "ls -la /home/$MAINUSER/.byobu"
 fi
+
+echo
+echo "BELEROFONTECH - STARTING CUSTOM 'BYOBU CONFIG AND ENVIRONMENT' INIT!"
+
+if [[ $( id -u ) = 0 ]]
+then
+    # Leave trace of this script's output. See: https://unix.stackexchange.com/a/145654
+    exec &> >(tee -a /var/log/belero-install-scripts.log)
+    chmod -f o-rwx /var/log/belero-install-scripts.log
+fi
+
+# Optional: more debug info (show executed commands)
+# set -x
+
+sh -xc 'date ; env ; whoami ; pwd'
 
 # Modify byobu key-bindings config file to use CTRL-B as prefix (tmux default)
 cat > /home/$MAINUSER/.byobu/keybindings.tmux << EOF

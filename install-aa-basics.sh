@@ -3,12 +3,6 @@
 #
 # Based on the previous cloud-config.txt file (runcmd section) from the former "vm-ubuntuserver-1804" template (...)
 
-echo
-echo "BELEROFONTECH - STARTING CUSTOM 'BASIC' INIT!"
-
-# Optional: more debug info (show executed commands)
-# set -x
-
 # Define default variable values if missing
 
 # MAINUSER is the preferred/expected var to get the desired value from outside; SUDO_USER can be used also,
@@ -24,10 +18,20 @@ then
     exit 1
 fi
 
-# Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
-export DEBIAN_FRONTEND=noninteractive
+echo
+echo "BELEROFONTECH - STARTING CUSTOM 'BASIC' INIT!"
+
+# Leave trace of this script's output. See: https://unix.stackexchange.com/a/145654
+exec &> >(tee -a /var/log/belero-install-scripts.log)
+chmod -f o-rwx /var/log/belero-install-scripts.log
+
+# Optional: more debug info (show executed commands)
+# set -x
 
 sh -xc 'date ; env ; whoami ; pwd'
+
+# Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
+export DEBIAN_FRONTEND=noninteractive
 
 # More secure permissions for main user's HOME dir
 chmod 0750 /home/$MAINUSER

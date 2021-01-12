@@ -6,9 +6,6 @@
 # NOTE: using this script implies accepting the license (EULA). See ACCEPT_EULA in the doc and below
 # NOTE: works on Ubuntu in WSL too
 
-# Optional: more debug info (show executed commands)
-# set -x
-
 # Define default variable values if missing
 
 # MAINUSER is the preferred/expected var to get the desired value from outside; SUDO_USER can be used also,
@@ -32,6 +29,18 @@ then
     echo "This script must be run with root privileges"
     exit 1
 fi
+
+echo
+echo "BELEROFONTECH - STARTING SQL SERVER ODBC INSTALL SCRIPT!"
+
+# Leave trace of this script's output. See: https://unix.stackexchange.com/a/145654
+exec &> >(tee -a /var/log/belero-install-scripts.log)
+chmod -f o-rwx /var/log/belero-install-scripts.log
+
+# Optional: more debug info (show executed commands)
+# set -x
+
+sh -xc 'date ; env ; whoami ; pwd'
 
 # Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
 export DEBIAN_FRONTEND=noninteractive
@@ -90,6 +99,9 @@ echo "Checking for Python module pyodbc"
 sudo -E -u $MAINUSER python3 -m pip show pyodbc && sudo -E -u $MAINUSER python3 -m pip check pyodbc
 # NOTE: this could be made informational only (it is not strictly necessary for the driver itself)
 [[ $? -ne 0 ]] && echo "WARNING, Python module pyodbc should be installed too"
+
+echo
+echo "BELEROFONTECH - FINISHED SQL SERVER ODBC INSTALL SCRIPT!"
 
 # # Optional: use this to force output to be shown, when run remotely on Azure with "run-custom-script.sh" (making the script exit status != 0 means that it didn't finish successfully)
 # echo "FINISHED. Now will end script execution with error status 101..." 1>&2

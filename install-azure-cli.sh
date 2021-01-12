@@ -1,9 +1,6 @@
 #!/bin/bash
 # Script to install the Azure CLI 2.0 on a Ubuntu (18.04) system
 
-# Optional: more debug info (show executed commands)
-# set -x
-
 # Get the updated repository information
 function OptionalAptGetUpdate()
 {
@@ -19,6 +16,18 @@ then
     echo "This script must be run with root privileges"
     exit 1
 fi
+
+echo
+echo "BELEROFONTECH - STARTING AZURE CLI INSTALL SCRIPT"
+
+# Leave trace of this script's output. See: https://unix.stackexchange.com/a/145654
+exec &> >(tee -a /var/log/belero-install-scripts.log)
+chmod -f o-rwx /var/log/belero-install-scripts.log
+
+# Optional: more debug info (show executed commands)
+# set -x
+
+sh -xc 'date ; env ; whoami ; pwd'
 
 # Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
 export DEBIAN_FRONTEND=noninteractive
@@ -49,6 +58,9 @@ apt-get -y install azure-cli
 
 # Check that it is installed OK, and show version info
 az --version
+
+echo
+echo "BELEROFONTECH - FINISHED AZURE CLI INSTALL SCRIPT"
 
 # # Optional: use this to force output to be shown, when run remotely on Azure with "run-custom-script.sh" (making the script exit status != 0 means that it didn't finish successfully)
 # echo "FINISHED. Now will end script execution with error status 101..." 1>&2

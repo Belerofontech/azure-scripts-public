@@ -1,9 +1,6 @@
 #!/bin/bash
 # Script to install PostgreSQL 12 (from the official apt repository) on a Ubuntu (18.04) system
 
-# Optional: more debug info (show executed commands)
-# set -x
-
 # Define default variable values if missing
 
 # MAINUSER is the preferred/expected var to get the desired value from outside; SUDO_USER can be used also,
@@ -37,6 +34,18 @@ then
     echo "This script must be run with root privileges"
     exit 1
 fi
+
+echo
+echo "BELEROFONTECH - STARTING POSTGRESQL INSTALL SCRIPT!"
+
+# Leave trace of this script's output. See: https://unix.stackexchange.com/a/145654
+exec &> >(tee -a /var/log/belero-install-scripts.log)
+chmod -f o-rwx /var/log/belero-install-scripts.log
+
+# Optional: more debug info (show executed commands)
+# set -x
+
+sh -xc 'date ; env ; whoami ; pwd'
 
 # Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
 export DEBIAN_FRONTEND=noninteractive
@@ -104,6 +113,9 @@ sudo -u postgres psql -c '\du' 2>/dev/null >/dev/null
 [[ $? -ne 0 ]] && echo "Error, PostgreSQL not installed or not working?" && exit 1
 sudo -u postgres psql -c '\du' | grep " $DBUSER "
 [[ $? -ne 0 ]] && echo "Error, PostgreSQL user does not exist?" && exit 1
+
+echo
+echo "BELEROFONTECH - FINISHED POSTGRESQL INSTALL SCRIPT!"
 
 # # Optional: use this to force output to be shown, when run remotely on Azure with "run-custom-script.sh" (making the script exit status != 0 means that it didn't finish successfully)
 # echo "FINISHED. Now will end script execution with error status 101..." 1>&2

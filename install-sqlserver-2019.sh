@@ -7,9 +7,6 @@
 # NOTE: requires having run previously "install-sqlserver-odbc-driver.sh" (installs sqlcmd -- package mssql-tools)
 # NOTE: does NOT work on Ubuntu in WSL!
 
-# Optional: more debug info (show executed commands)
-# set -x
-
 # Define default variable values if missing
 
 # MAINUSER is the preferred/expected var to get the desired value from outside; SUDO_USER can be used also,
@@ -73,6 +70,18 @@ then
     echo "  sudo ./install-sqlserver-odbc-driver.sh"
     exit 1
 fi
+
+echo
+echo "BELEROFONTECH - STARTING SQL SERVER INSTALL SCRIPT!"
+
+# Leave trace of this script's output. See: https://unix.stackexchange.com/a/145654
+exec &> >(tee -a /var/log/belero-install-scripts.log)
+chmod -f o-rwx /var/log/belero-install-scripts.log
+
+# Optional: more debug info (show executed commands)
+# set -x
+
+sh -xc 'date ; env ; whoami ; pwd'
 
 # Avoid apt-get commands to ask config/setup questions interactively (Debian/Ubuntu)
 export DEBIAN_FRONTEND=noninteractive
@@ -198,6 +207,9 @@ unset DBPASSSA
 
 # For info about troubleshooting possible problems, see:
 # https://docs.microsoft.com/es-es/sql/linux/sql-server-linux-troubleshooting-guide?view=sql-server-ver15
+
+echo
+echo "BELEROFONTECH - FINISHED SQL SERVER INSTALL SCRIPT!"
 
 # # Optional: use this to force output to be shown, when run remotely on Azure with "run-custom-script.sh" (making the script exit status != 0 means that it didn't finish successfully)
 # echo "FINISHED. Now will end script execution with error status 101..." 1>&2

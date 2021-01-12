@@ -2,12 +2,7 @@
 # Script to install (clone/download) the GitHub repository with these scripts (azure-scripts-public) on a (Ubuntu) system
 #
 # NOTE: this script can also be used by a normal (non-root) user
-
-echo
-echo "BELEROFONTECH - STARTING CUSTOM 'GIT CLONE AZURE SCRIPTS' INIT!"
-
-# Optional: more debug info (show executed commands)
-# set -x
+# NOTE: in that case, it will not write its output to /var/log (...)
 
 # Define default variable values if missing
 
@@ -25,6 +20,19 @@ else
 fi
 
 echo "Value for MAINUSER variable: $MAINUSER"
+
+echo
+echo "BELEROFONTECH - STARTING CUSTOM 'GIT CLONE AZURE SCRIPTS' INIT!"
+
+if [[ $( id -u ) = 0 ]]
+then
+    # Leave trace of this script's output. See: https://unix.stackexchange.com/a/145654
+    exec &> >(tee -a /var/log/belero-install-scripts.log)
+    chmod -f o-rwx /var/log/belero-install-scripts.log
+fi
+
+# Optional: more debug info (show executed commands)
+# set -x
 
 sh -xc 'date ; env ; whoami ; pwd'
 
