@@ -5,12 +5,13 @@
 # NOTE: in that case, it will not write its output to /var/log (...)
 
 # Define default variable values if missing
+# NOTE: in this case, only MAINUSER can be defined/used, and only if runnig as root
 
 # In this script being root is not a requirement, but the behaviour changes a bit
 if [[ $( id -u ) != 0 ]]
 then
     # The current user (the one that executes the script) should be in the USER env. variable
-    [[ -z "$MAINUSER" ]] && [[ ! -z "$USER" ]] && [[ "root" != "$USER" ]] && MAINUSER="$USER"
+    unset MAINUSER && [[ ! -z "$USER" ]] && [[ "root" != "$USER" ]] && MAINUSER="$USER"
     [[ -z "$MAINUSER" ]] && echo "Error, cannot automatically set the value for MAINUSER variable. Try using sudo?" && exit 1
 else
     # MAINUSER is the preferred/expected var to get the desired value from outside; SUDO_USER can be used also,
