@@ -390,6 +390,11 @@ MigrationBackup/
 ### Belerofontech specific ignored items ###
 desktop.ini
 log-rotate.state
+airflow.cfg
+airflow.env
+unittests.cfg
+webserver_config.py
+airflow-webserver.pid
 # NOTE: this is to override previous settings (we DO want to ignore this file!)
 .vscode/tasks.json
 # Secrets and passwords folder
