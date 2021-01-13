@@ -37,6 +37,11 @@ else
     echo "Value for MAINUSER variable: $MAINUSER"
 
     # Configure and auto-activate byobu at login
+    echo | tee -a /home/$MAINUSER/.profile
+    echo '# Belerofontech - Help before launching byobu. Can be skipped with ENTER' | tee -a /home/$MAINUSER/.profile
+    echo 'read -s -t 5 -p "BELEROFONTECH - BYOBU. F1: help (PuTTY: keyb. cfg. \"Xterm R6\") Alt-F12: mouse!"' | tee -a /home/$MAINUSER/.profile
+    chown $MAINUSER:$MAINUSER /home/$MAINUSER/.profile
+    chmod 0644 /home/$MAINUSER/.profile
     sudo -E -u $MAINUSER byobu-enable
     sudo -E -u $MAINUSER byobu-enable-prompt
     sudo -E -u $MAINUSER byobu-ctrl-a emacs
