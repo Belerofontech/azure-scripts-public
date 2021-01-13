@@ -11,7 +11,6 @@ https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/instal
 # https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-sqlserver-odbc-driver.sh
 # https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-sqlserver-2019.sh
 # https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-pip-packages.sh
-# https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-airflow.sh
 # https://raw.githubusercontent.com/Belerofontech/azure-scripts-public/main/install-byobu-config.sh
 
 # cloud-init config file used in the "vm-ubuntuserver-1804-flex" template
