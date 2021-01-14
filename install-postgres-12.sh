@@ -99,13 +99,12 @@ cd /  # Avoid problems with home directory permissions when using sudo to run co
 
 echo
 echo "Creating superuser '$DBUSER'"
-sudo -u postgres createuser --superuser "$DBUSER"
+sudo -u postgres createuser -e --superuser "$DBUSER"
 [[ $? -ne 0 ]] && echo "Error, user already exists or some other issue happened. Changing password below might fail"
 
 echo
 echo "Assigning password '$DBPASS' to superuser '$DBUSER'"
-# echo "Running command: ALTER USER $DBUSER WITH PASSWORD '$DBPASS'"
-sudo -u postgres psql -c "ALTER USER $DBUSER WITH PASSWORD '$DBPASS'"
+sudo -u postgres psql -e -c "ALTER USER $DBUSER WITH PASSWORD '$DBPASS'"
 
 echo
 echo "Checking PostgreSQL users"
