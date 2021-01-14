@@ -59,7 +59,7 @@ export LESS=-R
 # Belerofontech matplotlib configuration for headless server
 export MPLBACKEND=agg
 # Belerofontech hack to add some debug info to the user history (access time, IP address, etc.) at login
-history -r && history -s echo @@@ LOGIN @@@ \$(last -n1 --time iso | head -n1)
+history -r && history -s echo \"@@@ LOGIN @@@ \$(last -n1 --time iso | head -n1) @@@\"
 EOF
 chmod 0755 /etc/profile.d/Z99-zz-belero.sh
 
