@@ -28,7 +28,7 @@ then
 fi
 
 echo "NOTE: this script is deprecated, and should be used only for testing"
-echo "You should better use a Python virtual env and requirements.txt files!"
+echo "You should better use requirements.txt files (and opt. a Python virtual env)!"
 echo
 echo "YOU CAN CANCEL WITH CTRL-C IN THE NEXT 60 SECONDS!"
 sleep 60
