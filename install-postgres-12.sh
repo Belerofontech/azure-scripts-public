@@ -85,7 +85,7 @@ echo
 echo "Installing packages from PostgreSQL repository"
 apt-get -y install postgresql-12 postgresql-client-12 postgresql-doc-12 pgtop python3-psycopg2
 # Required for PostgREST, the first one is probably already installed but it's better to be explicit
-apt-get -y install libpq libpq-dev
+apt-get -y install libpq5 libpq-dev
 
 # Start the service (in case it has not already been done)
 # NOTE: we use service because it works on WSL too (and calls systemctl instead when it has to)
