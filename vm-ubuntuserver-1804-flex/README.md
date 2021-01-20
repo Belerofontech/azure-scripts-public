@@ -172,6 +172,10 @@ NOTE: Python packages (pip) are not installed during VM initialization anymore.
 
 ## Template changelog
 
+* Version: 2.1.0.0, 2021-01-20
+  * Change in the DNS name associated to the IP address: now shorter, and does not contain the VM name (only its "random"/unique id at the end)
+  * Added useful links to info/log files in the user home dir
+  * Other minor improvements (...)
 * Version: 2.0.0.0, 2021-01-11
   * IMPORTANT CHANGE: the template becomes public (new GitHub repository) to facilitate one-click ("Deploy to Azure" button) usage.
   * IMPORTANT CHANGES in the template structure: the cloud-init commands and customizations are now performed by several independent scripts, which are in turn invoked/referenced from cloud-config.txt (with the `#include` directive; NOTE that this directive causes false errors in the deploy.sh validation for some reason...).

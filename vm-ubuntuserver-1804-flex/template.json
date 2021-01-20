@@ -4,8 +4,8 @@
   "parameters": {
     "fixedTagsVector": {
       "defaultValue": {
-        "TemplateVersion": "2.0.0.0",
-        "TemplateDate": "2021-01-11",
+        "TemplateVersion": "2.1.0.0",
+        "TemplateDate": "2021-01-20",
         "TemplateName": "vm-ubuntuserver-1804-flex"
       },
       "type": "object",
