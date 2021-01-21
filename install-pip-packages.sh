@@ -51,7 +51,7 @@ export DEBIAN_FRONTEND=noninteractive
 sh -xc 'date ; env ; whoami ; pwd'
 
 # Install pre-requisite packages and get the updated repository information
-PREREQ="apt-transport-https python3-pip python3-venv python3-wheel unixodbc-dev mdbtools"
+PREREQ="apt-transport-https build-essential python3-pip python3-venv python3-wheel unixodbc-dev mdbtools"
 echo
 echo "Installing pre-requisite package(s): $PREREQ"
 # Run apt-get update only if it hasn't run recently, to save some time
@@ -59,9 +59,10 @@ OptionalAptGetUpdate
 apt-get -y install $PREREQ
 [[ $? -ne 0 ]] && echo "Error, pre-requisite package(s) cannot be installed" && exit 1
 
-echo
-# Optional: update Python pip (but not to 20.3 version or later, which has big changes in dependency management!)
-sudo -E -u $MAINUSER python3 -m pip install --user --upgrade 'pip<20.3'
+# # Optional: update Python pip (but not to 20.3 version or later, which has big changes in dependency management!)
+# # and also other related packages (NOTE: check, wheel is really needed?)
+# echo
+# sudo -E -u $MAINUSER python3 -m pip install --user --upgrade 'pip<20.3' setuptools wheel
 
 echo
 # Install desired Python packages with pip (user mode!)
@@ -69,6 +70,7 @@ sudo -E -u $MAINUSER python3 -m pip install --user pandas pyomo xlwt xlrd openpy
 # TO-DO: check; this package fails to install!
 # sudo -E -u $MAINUSER python3 -m pip install --user streamlit
 # TO-DO: check; this package fails to install!
+# TO-DO: check; use pandas-profiling instead?
 # sudo -E -u $MAINUSER python3 -m pip install --user pandas_profiling
 
 # Check that all dependencies are OK
