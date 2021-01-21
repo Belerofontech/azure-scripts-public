@@ -6,7 +6,7 @@ For additional details, see README.md inside each subfolder
 
 ## Scripts changelog
 
-* Version: 2.1.0.0, 2021-01-20
+* Version: 2.1.0.0, 2021-01-21
   * Various minor improvements (...)
 
 * Version: 2.0.0.0, 2021-01-11
