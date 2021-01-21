@@ -168,7 +168,7 @@ The currently used content (**cloudInitConfig** parameter, in the `parameters.js
 
 * `install-zz-config-env-final.sh`: performs general environment setup (system info at login, env. variables, etc.), makes some useful info easily accesible, and does some final cleanup.
 
-NOTE: Python packages (pip) are not installed during VM initialization anymore.
+NOTE: Python packages (pip) are **not installed** during VM initialization anymore. Besides, any use of the `install-pip-packages.sh` script is now **discouraged** (requirements.txt-like files should be used instead, i.e. manually with `python3 -m pip install --user -r ...`). The script is included here only as a reference of the previous template versions behaviour.
 
 ## Template changelog
 
