@@ -64,7 +64,7 @@ then
 fi
 
 # Install pre-requisite packages and get the updated repository information
-PREREQ="apt-transport-https lm-sensors"
+PREREQ="apt-transport-https build-essential lm-sensors"
 echo
 echo "Installing pre-requisite package(s): $PREREQ"
 # Run apt-get update only if it hasn't run recently, to save some time

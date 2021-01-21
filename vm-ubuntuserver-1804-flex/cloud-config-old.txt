@@ -8,8 +8,9 @@
 # cloud-init config file used in the former "vm-ubuntuserver-1804" template, provided as an example only (...)
 # IMPORTANT NOTE: this file is no longer used / mantained, and now NO LONGER CORRESPONDS to the customData parameter in the template !
 #
-# Version: 1.X.X.X, 2021-01-11. Changelog:
+# Version: 1.X.X.X, 2021-01-21. Changelog:
 # - DEBIAN_FRONTEND=noninteractive env. var. defined for "safer" apt-get usage (...)
+# - Added some more basic (apt) packages, to be safe
 # Version: 1.4.0.0, 2020-12-30. Changelog:
 # - PostgreSQL 12 installation made optional (PostgreSQL was introduced in previous non-production version, 1.3.0.0)
 # - Package "python3-psycopg2" installation made optional (PostgreSQL)
@@ -175,7 +176,7 @@ runcmd:
  - DEBIAN_FRONTEND=noninteractive apt-get -y update && DEBIAN_FRONTEND=noninteractive apt-get -y -u dist-upgrade
  - DEBIAN_FRONTEND=noninteractive apt-get -y install apt-transport-https ca-certificates curl cifs-utils dos2unix colorized-logs ccze byobu gdb zip unzip bc vim neofetch
 # - DEBIAN_FRONTEND=noninteractive apt-get -y install coinor-cbc glpk-utils
- - DEBIAN_FRONTEND=noninteractive apt-get -y install python3-pip python3-venv python3-wheel unixodbc-dev mdbtools
+ - DEBIAN_FRONTEND=noninteractive apt-get -y install build-essential python3-pip python3-venv python3-wheel unixodbc-dev mdbtools
 # # PostgreSQL 12 installation:
 #  - DEBIAN_FRONTEND=noninteractive apt-get -y install postgresql-12 postgresql-client-12 postgresql-doc-12 pgtop python3-psycopg2
 # # TO-DO: Remove Python 2 and set Python 3 as the default for scripts that use just "python". From:

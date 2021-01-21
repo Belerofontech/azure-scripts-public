@@ -47,7 +47,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Install pre-requisite packages and get the updated repository information
 # TO-DO: check; unixodbc-dev is really needed?
-PREREQ="apt-transport-https unixodbc-dev"
+PREREQ="apt-transport-https build-essential unixodbc-dev"
 echo
 echo "Installing pre-requisite packages: $PREREQ"
 # Run apt-get update only if it hasn't run recently, to save some time

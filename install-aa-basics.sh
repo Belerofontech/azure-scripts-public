@@ -42,7 +42,7 @@ apt-get -y update && apt-get -y -u dist-upgrade
 # General system tools/utilities packages that we want to be always installed
 apt-get -y install apt-transport-https ca-certificates curl cifs-utils dos2unix colorized-logs ccze byobu gdb zip unzip bc vim neofetch
 # Pyhton-specific packages
-apt-get -y install python3-pip python3-venv python3-wheel unixodbc-dev mdbtools
+apt-get -y install build-essential python3-pip python3-venv python3-wheel unixodbc-dev mdbtools
 # # Optional: install Cbc and GLPK solvers
 # apt-get -y install coinor-cbc glpk-utils
 
