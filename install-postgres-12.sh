@@ -116,6 +116,15 @@ sudo -u postgres psql -c '\du' | grep " $DBUSER "
 [[ $? -ne 0 ]] && echo "Error, PostgreSQL user does not exist?" && exit 1
 
 echo
+echo "NOTE: review (and modify if needed) the PostgreSQL config in /etc/postgres/..."
+echo "Specially the \"pg_hba.conf\" and \"postgresql.conf\" files, for network settings!"
+echo
+echo "Also, configure firewall(s) if needed, to allow traffic to TCP port 5432..."
+# Setup Ubuntu local firewall (disabled by default)
+# sudo ufw allow 5432/tcp
+# sudo ufw reload
+
+echo
 echo "BELEROFONTECH - FINISHED POSTGRESQL INSTALL SCRIPT!"
 
 # # Optional: use this to force output to be shown, when run remotely on Azure with "run-custom-script.sh" (making the script exit status != 0 means that it didn't finish successfully)
