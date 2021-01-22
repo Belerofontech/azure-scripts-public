@@ -47,8 +47,8 @@ git clone https://github.com/Belerofontech/azure-scripts-public
 cd azure-scripts-public
 find . -type f -name "*.sh" | xargs chmod a+x
 
-# Fix owner, if run as sudo
-[[ $( id -u ) = 0 ]] && sudo chown -R $MAINUSER:$MAINUSER .
+# Fix owner, if run as root
+[[ $( id -u ) = 0 ]] && chown -R $MAINUSER:$MAINUSER .
 
 echo
 echo "BELEROFONTECH - FINISHED CUSTOM 'GIT CLONE AZURE SCRIPTS' INIT!"

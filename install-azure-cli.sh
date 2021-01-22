@@ -57,7 +57,7 @@ echo "Installing package from Microsoft repository"
 apt-get -y install azure-cli
 
 # Check that it is installed OK, and show version info
-az --version
+sudo -E -u $MAINUSER az --version
 
 echo
 echo "BELEROFONTECH - FINISHED AZURE CLI INSTALL SCRIPT"
