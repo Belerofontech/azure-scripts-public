@@ -1,6 +1,14 @@
 #!/bin/bash
 # Script to install the Azure CLI 2.0 on a Ubuntu (18.04) system
 
+# Define default variable values if missing
+
+# MAINUSER is the preferred/expected var to get the desired value from outside; SUDO_USER can be used also,
+# in case MAINUSER is not defined. If none of the two are defined/available, set a default value: "belero"
+[[ -z "$MAINUSER" ]] && [[ ! -z "$SUDO_USER" ]] && [[ "root" != "$SUDO_USER" ]] && MAINUSER="$SUDO_USER"
+[[ -z "$MAINUSER" ]] && MAINUSER="belero"
+echo "Value for MAINUSER variable: $MAINUSER"
+
 # Get the updated repository information
 function OptionalAptGetUpdate()
 {
